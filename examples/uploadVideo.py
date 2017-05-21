@@ -20,4 +20,4 @@ except Exception as e:
 try:
     i.uploadVideo(video, caption)
 except Exception as e:
-    print e.message
+    print(e.message)

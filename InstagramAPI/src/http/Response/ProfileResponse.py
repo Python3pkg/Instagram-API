@@ -24,7 +24,7 @@ class ProfileResponse(Response):
         self.external_url = None
 
         if self.STATUS_OK == response['status']:
-            for p, v in response['user'].iteritems():
+            for p, v in response['user'].items():
                 setattr(self, p, v)
 
             self.hd_profile_pic_url_info = HdProfilePicUrlInfo(self.hd_profile_pic_url_info)

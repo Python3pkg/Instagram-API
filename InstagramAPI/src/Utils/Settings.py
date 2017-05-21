@@ -37,7 +37,7 @@ class Settings:
 
         with open(self.path, 'wb') as fp:
             fp.seek(0)
-            fp.writelines([(key + '=' + value + "\n").encode("utf-8") for (key, value) in self.sets.items()])
+            fp.writelines([(key + '=' + value + "\n").encode("utf-8") for (key, value) in list(self.sets.items())])
 
     def __set(self, prop, value):
         self.set(prop, value)

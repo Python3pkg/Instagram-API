@@ -10,7 +10,7 @@ from InstagramAPI.src.Utils import Settings, json_decode
 try:
     from io import BytesIO
 except ImportError:
-    from StringIO import StringIO as BytesIO
+    from io import StringIO as BytesIO
 
 
 class Checkpoint(object):
@@ -127,9 +127,9 @@ class Checkpoint(object):
         ch.setopt(pycurl.COOKIEJAR, self.settingsPath + self.username + '-cookies.dat')
 
         if post:
-            import urllib
+            import urllib.request, urllib.parse, urllib.error
             ch.setopt(pycurl.POST, len(post))
-            ch.setopt(pycurl.POSTFIELDS, urllib.urlencode(post))
+            ch.setopt(pycurl.POSTFIELDS, urllib.parse.urlencode(post))
 
         ch.perform()
         resp = buffer.getvalue()
@@ -139,11 +139,11 @@ class Checkpoint(object):
         ch.close()
 
         if self.debug:
-            import urllib
-            print("REQUEST: " + endpoint)
+            import urllib.request, urllib.parse, urllib.error
+            print(("REQUEST: " + endpoint))
             if post is not None:
                 if not isinstance(post, list):
-                    print('DATA: ' + urllib.unquote_plus(json.dumps(post)))
-            print("RESPONSE: " + body + "\n")
+                    print(('DATA: ' + urllib.parse.unquote_plus(json.dumps(post))))
+            print(("RESPONSE: " + body + "\n"))
 
         return [header, json_decode(body)]

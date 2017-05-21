@@ -2,14 +2,14 @@ import json
 import locale
 import re
 import time
-import urllib
+import urllib.request, urllib.parse, urllib.error
 from collections import OrderedDict
 from distutils.version import LooseVersion
 
 try:
     from io import BytesIO
 except ImportError:
-    from StringIO import StringIO as BytesIO
+    from io import StringIO as BytesIO
 
 from .Utils import *
 from .http import HttpInterface, UserAgent
@@ -1038,7 +1038,7 @@ class Instagram:
         else:
             locationQuery['search_query'] = query  # TODO possible bug, query is None
 
-        locations = LocationResponse(self.http.request("location_search/?" + urllib.urlencode(locationQuery))[1])
+        locations = LocationResponse(self.http.request("location_search/?" + urllib.parse.urlencode(locationQuery))[1])
 
         if not locations.isOk():
             raise InstagramException(locations.getMessage() + "\n")
@@ -1054,7 +1054,7 @@ class Instagram:
         :rtype: object
         :return: query data
         """
-        query = urllib.quote(query)
+        query = urllib.parse.quote(query)
         query = \
             self.http.request("fbsearch/topsearch/?context=blended&query=" + query + "&rank_token=" + self.rank_token)[
                 1]
@@ -1205,7 +1205,7 @@ class Instagram:
         :rtype: object
         :return: Location location data
         """
-        query = urllib.quote(query)
+        query = urllib.parse.quote(query)
         endpoint = "fbsearch/places/?rank_token=" + self.rank_token + "&query=" + query
 
         locationFeed = self.http.request(endpoint)[1]
@@ -1404,12 +1404,12 @@ class Instagram:
                 if item.getVideoVersions():
                     file_put_contents(
                         os.path.join(dir_name, item.getMediaId() + '.mp4'),
-                        urllib.urlopen(item.getVideoVersions()[0].getUrl()).read()
+                        urllib.request.urlopen(item.getVideoVersions()[0].getUrl()).read()
                     )  # todo test and remove below
                 else:
                     file_put_contents(
                         os.path.join(dir_name, item.getMediaId() + '.jpg'),
-                        urllib.urlopen(item.getImageVersions()[0].getUrl()).read()
+                        urllib.request.urlopen(item.getImageVersions()[0].getUrl()).read()
                     )  # todo test and remove below
 
                     # urllib.urlretrieve(

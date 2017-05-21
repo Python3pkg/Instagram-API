@@ -12,7 +12,7 @@ from InstagramAPI.src.http.Response.CheckUsernameResponse import CheckUsernameRe
 from InstagramAPI.src.http.Response.UsernameSuggestionsResponse import UsernameSuggestionsResponse
 
 try:
-    from StringIO import StringIO as BytesIO
+    from io import StringIO as BytesIO
 except ImportError:
     from io import BytesIO
 
@@ -230,10 +230,10 @@ class InstagramRegistration(object):
         ch.close()
 
         if self.debug:
-            print("REQUEST: " + endpoint)
+            print(("REQUEST: " + endpoint))
             if post is not None:
                 if not isinstance(post, list):
-                    print("DATA: " + str(post))
-            print("RESPONSE: " + body)
+                    print(("DATA: " + str(post)))
+            print(("RESPONSE: " + body))
 
         return [header, json_decode(body)]
